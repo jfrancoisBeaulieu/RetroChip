@@ -1,0 +1,19 @@
+# Build output and third-party code, which the README explains how to fetch
+build/
+external/
+
+# SoundFonts belong to their authors and are never part of this repository
+*.sf2
+*.sf3
+*.sfz
+
+# Working notes
+docs/superpowers/
+
+# Editor and IDE state
+.vscode/
+.idea/
+xcuserdata/
+cmake-build-*/
+
+.DS_Store

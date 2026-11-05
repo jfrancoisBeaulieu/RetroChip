@@ -1,0 +1,60 @@
+# Builds and tests RetroChip on macOS and Windows at every push, and keeps what each build made for two weeks:
+# the Windows VST3 and application can be tried from the run's page.
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # The same versions as the README's.
+      - name: Fetch JUCE, ymfm and TinySoundFont
+        shell: bash
+        run: |
+          git clone --depth 1 --branch 9.0.5 https://github.com/juce-framework/JUCE.git external/JUCE
+          git clone https://github.com/aaronsgiles/ymfm.git external/ymfm
+          git -C external/ymfm checkout 81aec25ccbb98f4873a255f7551ac4dadac59b4a
+          git clone https://github.com/schellingb/TinySoundFont.git external/TinySoundFont
+          git -C external/TinySoundFont checkout 853a0a171759f1ddba0de1442133a75912bbeffa
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      # The Audio Unit test finds the plugin among those the system has registered.
+      - name: Register the Audio Unit
+        if: runner.os == 'macOS'
+        run: killall -9 AudioComponentRegistrar || true
+
+      - name: Test
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Validate the Audio Unit
+        if: runner.os == 'macOS'
+        run: auval -v aumu Rc2a Slpr
+
+      - name: Keep the plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: RetroChip-${{ runner.os }}
+          retention-days: 14
+          path: |
+            build/RetroChip_artefacts/Release/VST3
+            build/RetroChip_artefacts/Release/Standalone
+            build/RetroChip_artefacts/Release/AU
