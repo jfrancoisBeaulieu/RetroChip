@@ -458,6 +458,40 @@ bool regionsFit(const std::uint8_t* d, const Layout& layout)
 // 20 log10(2) per unit of pan, so that a pan of 0.5 (hard to one side) is 6.02 dB.
 constexpr float kPanPairDb = 12.04f;
 
+// Envelope and LFO times come from timecents in the file, up to 2^27 s, and TinySoundFont turns them
+// into an int count of samples, which overflows past about 11 000 s at 192 kHz: ARM saturates it, x86
+// makes it negative and skips the segment. They are held to the format's longest time, 8000 timecents.
+constexpr float kMaxEnvelopeSeconds = 101.59367f; // 2^(8000 / 1200)
+constexpr float kMaxTimecents = 8000.0f;
+// A hold or decay scaled by key stays in timecents until the note starts, then gains up to 67 keys
+// times its scaling (note 127 is 67 keys from 60). The scaling is held so that the sum stays under
+// this: 3250 s, or 1.2 billion samples at 384 kHz.
+constexpr float kMaxScaledTimecents = 14000.0f;
+constexpr float kMostKeysFromCentre = 67.0f;
+
+void limitEnvelope(tsf_envelope& e)
+{
+    const auto seconds = [](float& s) { s = std::clamp(s, 0.0f, kMaxEnvelopeSeconds); };
+    const auto keyed = [&seconds](float& time, float& perKey)
+    {
+        if (perKey == 0.0f)
+        {
+            seconds(time);
+            return;
+        }
+        time = std::clamp(time, -12000.0f, kMaxTimecents);
+        const float most = (kMaxScaledTimecents - time) / kMostKeysFromCentre;
+        perKey = std::clamp(perKey, -most, most);
+    };
+    seconds(e.delay);
+    seconds(e.attack);
+    seconds(e.release);
+    keyed(e.hold, e.keynumToHold);
+    keyed(e.decay, e.keynumToDecay);
+    // A gain for the volume envelope, a fraction for the other; the format keeps both from 0 to 1.
+    e.sustain = std::clamp(e.sustain, 0.0f, 1.0f);
+}
+
 // The positions in a region come from sums of numbers in the file, which the checks above cannot
 // bound. A region that would read outside the sample data is shortened, or switched off.
 void sanitizeRegions(tsf* font, std::uint32_t sampleCount)
@@ -479,6 +513,10 @@ void sanitizeRegions(tsf* font, std::uint32_t sampleCount)
             region.transpose = std::clamp(region.transpose, -240, 240);
             region.tune = std::clamp(region.tune, -1200, 1200);
             region.pitch_keytrack = std::clamp(region.pitch_keytrack, -1200, 1200);
+            limitEnvelope(region.ampenv);
+            limitEnvelope(region.modenv);
+            region.delayModLFO = std::clamp(region.delayModLFO, 0.0f, kMaxEnvelopeSeconds);
+            region.delayVibLFO = std::clamp(region.delayVibLFO, 0.0f, kMaxEnvelopeSeconds);
 
             // TinySoundFont reads the format's centibels as a hundredth (0.01 at tsf.h:652) and plays them as
             // decibels, so 200 cB comes out as 2 dB rather than 20. The factor is in SoundFontBank.h.

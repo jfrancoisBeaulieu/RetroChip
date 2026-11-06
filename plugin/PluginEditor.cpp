@@ -356,6 +356,7 @@ namespace
 {
 constexpr int kConsoleTabsWidth = 210;
 constexpr int kConsoleChipsGap = 8;
+constexpr int kChipTextPadding = 12; // around a chip button's text, 6 on each side
 
 // The console parameter's indexes under each tab, in the order their buttons go: the NES (2A03, VRC6, N163), the
 // Genesis (FM, PSG) and the SNES (S-DSP, SoundFont).
@@ -466,13 +467,23 @@ void ConsoleSelector::resized()
     for (auto& tab : tabs)
         tab->setBounds(tabArea.removeFromLeft(tabWidth));
 
-    // The tab's chips share what is left, in their order.
+    // The tab's chips share what is left, in their order: each its text's width, and an equal part of the
+    // rest. The monospaced font differs between systems (Menlo, Consolas), so the widths are measured.
     area.removeFromLeft(kConsoleChipsGap);
     const auto& shown = consolesOfTab(shownTab);
-    const int chipWidth = area.getWidth() / static_cast<int>(shown.size());
+    std::vector<int> widths;
+    int needed = 0;
+    for (const int console : shown)
+    {
+        auto& chip = *chips[static_cast<size_t>(console)];
+        const auto font = getLookAndFeel().getTextButtonFont(chip, getHeight());
+        widths.push_back(juce::GlyphArrangement::getStringWidthInt(font, chip.getButtonText()) + kChipTextPadding);
+        needed += widths.back();
+    }
+    const int spare = (area.getWidth() - needed) / static_cast<int>(shown.size());
     for (size_t i = 0; i < shown.size(); ++i)
     {
-        auto bounds = area.removeFromLeft(chipWidth);
+        auto bounds = area.removeFromLeft(widths[i] + spare);
         if (i + 1 == shown.size())
             bounds = bounds.withRight(getWidth());
         chips[static_cast<size_t>(shown[i])]->setBounds(bounds);

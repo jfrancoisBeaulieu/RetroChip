@@ -3674,10 +3674,11 @@ void resolve_rejects_paths_leaving_the_root()
     CHECK(resolveInLibrary(root, "Group/a.sf2") == inside);
     CHECK(resolveInLibrary(root, "never/made.sf2") == root.getChildFile("never/made.sf2")); // the loader finds that out
 
-    // Only a whole name is special, and these stay inside.
-    CHECK(resolveInLibrary(root, "..hidden.sf2").getFullPathName() == root.getFullPathName() + "/..hidden.sf2");
-    CHECK(resolveInLibrary(root, "a..b/c..sf2").getFullPathName() == root.getFullPathName() + "/a..b/c..sf2");
-    CHECK(resolveInLibrary(root, "~tilde.sf2").getFullPathName() == root.getFullPathName() + "/~tilde.sf2");
+    // Only a whole name is special, and these stay inside. Windows writes the path with backslashes.
+    const auto separator = juce::File::getSeparatorString();
+    CHECK(resolveInLibrary(root, "..hidden.sf2").getFullPathName() == root.getFullPathName() + separator + "..hidden.sf2");
+    CHECK(resolveInLibrary(root, "a..b/c..sf2").getFullPathName() == root.getFullPathName() + separator + "a..b" + separator + "c..sf2");
+    CHECK(resolveInLibrary(root, "~tilde.sf2").getFullPathName() == root.getFullPathName() + separator + "~tilde.sf2");
 }
 
 void library_survives_a_symlink_loop()

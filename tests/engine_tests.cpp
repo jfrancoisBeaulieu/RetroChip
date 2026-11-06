@@ -4966,6 +4966,58 @@ TEST(bank_refuses_a_region_bomb)
         playEverything(*bank);
 }
 
+// Envelope and LFO times at the top of the 16-bit range, or pushed there by key scaling, come to more
+// samples than an int holds. TinySoundFont converts them to int, which ARM saturates and x86 turns into
+// a negative count that skips the segment. Either way they must stay slow: a long attack still rising,
+// a long decay still loud, a long delay still silent.
+TEST(sf_extreme_envelope_times_stay_slow)
+{
+    constexpr double rate = 192000.0;
+    constexpr int kDelayModLfo = 21, kDelayVibLfo = 23, kDecayModEnv = 28, kSustainModEnv = 29, kKeyToModDecay = 32;
+    constexpr int kDelayVolEnv = 33, kAttackVolEnv = 34, kHoldVolEnv = 35, kDecayVolEnv = 36, kSustainVolEnv = 37;
+    constexpr int kKeyToVolHold = 39, kKeyToVolDecay = 40;
+    const auto zone = [](std::vector<testsf2::Gen> gens)
+    {
+        gens.push_back({ kSampleModes, 1 });
+        gens.push_back({ kSampleId, 0 });
+        return testsf2::Zone(gens);
+    };
+    const std::vector<InstrumentSpec> instruments {
+        { "Plain", { zone({}) } },
+        { "Slow attack", { zone({ { kAttackVolEnv, 32767 }, { kDelayModLfo, 32767 }, { kDelayVibLfo, 32767 } }) } },
+        { "Keyed decay", { zone({ { kDecayVolEnv, 8000 }, { kKeyToVolDecay, 1200 }, { kSustainVolEnv, 1440 }, { kHoldVolEnv, 8000 },
+                                  { kKeyToVolHold, -1200 }, { kDecayModEnv, 32767 }, { kKeyToModDecay, 1200 }, { kSustainModEnv, 32767 } }) } },
+        { "Late", { zone({ { kDelayVolEnv, 32767 } }) } },
+    };
+    std::vector<PresetSpec> presets;
+    for (int i = 0; i < static_cast<int>(instruments.size()); ++i)
+        presets.push_back({ instruments[static_cast<size_t>(i)].name, 0, i, { { { kInstrument, i } } } });
+    const auto file = testsf2::buildSf2(presets, instruments);
+    const auto bank = SoundFontBank::fromMemory(file.data(), static_cast<int>(file.size()), rate);
+    CHECK(bank != nullptr);
+    if (!bank)
+        return;
+
+    const auto level = [&](int instrument, int note)
+    {
+        SoundFontParams params;
+        params.instrument = instrument;
+        auto engine = makeSf(bank.get(), params, rate);
+        engine->noteOn(note, 127);
+        const auto out = render(*engine, static_cast<int>(rate / 4));
+        CHECK(std::all_of(out.begin(), out.end(), [](float s) { return std::isfinite(s); }));
+        return rms(out);
+    };
+    const double plainLow = level(0, 24), plainHigh = level(0, 60);
+    const double attack = level(1, 60), decayLow = level(2, 24), decayHigh = level(2, 108), late = level(3, 60);
+    std::printf("  plain %.4f, slow attack %.4f, keyed decay at 24 %.4f (plain %.4f), at 108 %.4f, late %.6f\n", plainHigh, attack,
+                decayLow, plainLow, decayHigh, late);
+    CHECK(plainHigh > 0.01 && plainLow > 0.01);
+    CHECK(attack < 0.05 * plainHigh);
+    CHECK(decayLow > 0.5 * plainLow);
+    CHECK(late == 0.0);
+}
+
 
 // A file whose every field is different, so that a field read from the wrong place shows.
 std::array<std::uint8_t, kTfiSize> tfiFile()
@@ -5328,7 +5380,7 @@ TEST(genesis_pcm_mix_stays_in_the_dac_range)
     GenesisUserSound sound;
     sound.pcm.assign(26634, 255);
     for (size_t i = 0; i < sound.pcm.size(); i += 2000)
-        std::fill_n(sound.pcm.begin() + static_cast<std::ptrdiff_t>(i), 1000, static_cast<std::uint8_t>(1));
+        std::fill_n(sound.pcm.begin() + static_cast<std::ptrdiff_t>(i), std::min<size_t>(1000, sound.pcm.size() - i), static_cast<std::uint8_t>(1));
     auto engine = makePcm(sound, pcmParams());
     for (int note = 69; note < 77; ++note)
         engine->noteOn(note, 127);
