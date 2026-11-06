@@ -1,197 +1,197 @@
 # RetroChip
 
-Instrument MIDI au son de six puces sonores de consoles et de cartouches, en Audio Unit et VST3, pour macOS sur Apple Silicon, et en VST3 pour Windows (voir [Autres logiciels et Windows](#autres-logiciels-et-windows)). En haut de la fenêtre, trois onglets choisissent la console : **NES**, **Genesis** et **SNES**. À côté de l'onglet, la NES propose sa puce, **2A03**, et deux puces de cartouches Famicom, **VRC6** et **N163** ; la Genesis ses deux puces, **FM** et **PSG** ; la SNES sa puce, **S-DSP**, ou **SoundFont**, qui joue des fichiers `.sf2` que tu fournis (voir [SoundFonts](#soundfonts)).
+A MIDI instrument with the sound of six console and cartridge sound chips, as an Audio Unit and VST3 for macOS on Apple Silicon, and as a VST3 for Windows (see [Other hosts and Windows](#other-hosts-and-windows)). Three tabs at the top of the window choose the console: **NES**, **Genesis** and **SNES**. Beside the tab, the NES offers its chip, **2A03**, and two Famicom cartridge chips, **VRC6** and **N163**; the Genesis its two chips, **FM** and **PSG**; the SNES its chip, **S-DSP**, or **SoundFont**, which plays `.sf2` files you provide (see [SoundFonts](#soundfonts)).
 
-| Onglet et choix | Puce imitée | Son |
+| Tab and choice | Chip emulated | Sound |
 |---|---|---|
-| **NES** > **2A03** | 2A03 | Pulse (4 rapports cycliques), triangle, bruit ou DPCM (échantillons), au choix par instance ; instruments FamiTracker `.fti` |
-| **NES** > **VRC6** | VRC6 de Konami (cartouches Famicom) | Pulse (8 rapports cycliques) ou dent de scie ; instruments `.fti` |
-| **NES** > **N163** | Namco 163 (cartouches Famicom) | Formes d'onde de 4 bits, 8 fournies ; instruments `.fti` avec leurs ondes |
-| **Genesis** > **FM** | YM2612 | Synthèse FM à 4 opérateurs, 12 timbres, algorithme et rétroaction réglables, import de timbres `.tfi`, d'échantillons PCM 8 bits et de kits |
-| **SNES** > **S-DSP** | S-DSP | Lecture d'échantillons compressés en BRR, avec enveloppe et écho |
-| **Genesis** > **PSG** | SN76489, la deuxième puce de la Genesis | Ondes carrées ou bruit, 16 volumes |
+| **NES** > **2A03** | 2A03 | Pulse (4 duty cycles), triangle, noise or DPCM (samples), one per instance; FamiTracker `.fti` instruments |
+| **NES** > **VRC6** | Konami's VRC6 (Famicom cartridges) | Pulse (8 duty cycles) or sawtooth; `.fti` instruments |
+| **NES** > **N163** | Namco 163 (Famicom cartridges) | 4-bit waveforms, 8 included; `.fti` instruments with their waves |
+| **Genesis** > **FM** | YM2612 | 4-operator FM synthesis, 12 timbres, adjustable algorithm and feedback, import of `.tfi` timbres, 8-bit PCM samples and kits |
+| **SNES** > **S-DSP** | S-DSP | Playback of BRR-compressed samples, with envelope and echo |
+| **Genesis** > **PSG** | SN76489, the Genesis's second chip | Square waves or noise, 16 volume levels |
 
-L'infobulle de chaque bouton donne le nom de la puce imitée. Les noms des préréglages ne citent aucune console. **SoundFont** lit n'importe quel fichier `.sf2` ; il est rangé sous la SNES parce que les SoundFonts servent surtout ici à retrouver des sons de jeux SNES.
+Each button's tooltip gives the name of the chip it emulates. Preset names mention no console. **SoundFont** plays any `.sf2` file; it sits under the SNES because SoundFonts are mostly used here to bring back SNES game sounds.
 
-## Langue
+## Language
 
-L'interface est en anglais par défaut. Les boutons **EN** et **FR**, en bas à droite sous le clavier, la passent en français ou en anglais : le choix vaut pour toutes les instances et tous les projets, et il est gardé dans `~/Library/Application Support/SleeperMusic/RetroChip/Settings.xml` sur macOS, ou `%APPDATA%\SleeperMusic\RetroChip\Settings.xml` sous Windows. Les termes de synthé (Attack, Pulse, Gain, les noms des panneaux) restent les mêmes dans les deux langues. Ce README nomme les boutons par leur texte en français.
+The interface is in English by default. The **EN** and **FR** buttons, at the bottom right under the keyboard, switch it to English or French. The choice applies to every instance and every project, and is kept in `~/Library/Application Support/SleeperMusic/RetroChip/Settings.xml` on macOS, or `%APPDATA%\SleeperMusic\RetroChip\Settings.xml` on Windows. Synth terms (Attack, Pulse, Gain, the panel names) are the same in both languages. This README names the buttons by their English text.
 
-Les paramètres que Logic affiche pour l'automation portent des noms anglais dans les deux langues ; leurs valeurs propres à RetroChip (« Mon timbre TFI », « Infini ») suivent la langue choisie. Un message déjà affiché garde sa langue jusqu'au message suivant.
+The parameters Logic shows for automation have English names in both languages; RetroChip's own values ("My TFI timbre", "Infinite") follow the chosen language. A message already on screen keeps its language until the next one.
 
-## Parcourir les sons au clavier
+## Browsing sounds with the keyboard
 
-Clique dans la fenêtre du plugin, puis utilise les flèches pour passer d'un son à l'autre ; chaque son se joue tout de suite.
+Click in the plugin window, then use the arrow keys to move from one sound to the next; each sound plays right away.
 
-| Console | ↑ et ↓ | ← et → |
+| Console | ↑ and ↓ | ← and → |
 |---|---|---|
-| **SNES** > **SoundFont** | instruments du fichier | fichiers du dossier |
-| **Genesis** > **FM** | timbres (les tiens seulement s'ils ont un fichier importé) | fichiers `.tfi` du dossier |
-| **SNES** > **S-DSP** | instruments | préréglages |
-| **NES** (2A03, VRC6, N163) | préréglages de la puce | fichiers `.fti` du dossier |
-| **Genesis** > **PSG** | préréglages | préréglages |
+| **SNES** > **SoundFont** | instruments in the file | files in the folder |
+| **Genesis** > **FM** | timbres (your own only if a file is imported) | `.tfi` files in the folder |
+| **SNES** > **S-DSP** | instruments | presets |
+| **NES** (2A03, VRC6, N163) | the chip's presets | `.fti` files in the folder |
+| **Genesis** > **PSG** | presets | presets |
 
-Arrivé au bout d'une liste, la flèche ne fait plus rien. Les autres touches, et les flèches avec Cmd, Option, Ctrl ou Maj, restent au logiciel hôte : la barre d'espace lance toujours la lecture dans Logic. Le clavier de l'écran ne prend jamais les touches du clavier de l'ordinateur.
+At the end of a list, the arrow does nothing more. Other keys, and arrows with Cmd, Option, Ctrl or Shift, stay with the host: the space bar still starts playback in Logic. The on-screen keyboard never takes the computer keyboard's keys.
 
-## Modèle de jeu : un son par instance
+## Playing model: one sound per instance
 
-Chaque instance du plugin joue **un seul son**. Avec les six puces, elle a 8 voix, qui servent aux accords, aux notes qui se chevauchent et aux relâchements. Si les 8 voix sont prises, la plus ancienne est remplacée (le choix **SoundFont** a ses propres voix, décrites plus bas). Sur la 2A03, l'instance joue un seul canal (pulse, triangle, bruit ou DPCM), comme la puce.
+Each plugin instance plays **a single sound**. With all six chips it has 8 voices, used for chords, overlapping notes and releases. When all 8 voices are busy, the oldest is replaced (the **SoundFont** choice has its own voices, described below). On the 2A03, the instance plays a single channel (pulse, triangle, noise or DPCM), like the chip.
 
-Pour un morceau complet, il faut donc une instance par son : une basse, une mélodie, un accompagnement, une percussion. Il y a 72 préréglages, soit 12 par puce, et le menu les groupe par puce.
+A full song therefore needs one instance per sound: a bass, a melody, an accompaniment, percussion. There are 72 presets, 12 per chip, and the menu groups them by chip.
 
-## Utiliser dans Logic Pro
+## Using it in Logic Pro
 
-La compilation installe le plugin dans `~/Library/Audio/Plug-Ins`. Dans Logic Pro :
+The build installs the plugin in `~/Library/Audio/Plug-Ins`. In Logic Pro:
 
-1. Crée une piste d'instrument logiciel.
-2. Dans le logement Instrument, choisis **AU Instruments > SleeperMusic > RetroChip**.
-3. Choisis la console avec le sélecteur, puis un préréglage.
-4. Pour un deuxième son, crée une nouvelle piste d'instrument logiciel avec une nouvelle instance de RetroChip. Une piste égale un son : par exemple deux pistes **NES** (pulse), une piste **NES** (triangle) pour la basse, une piste **NES** (bruit) pour la batterie, une piste **Genesis** > **FM** pour une basse FM et une piste **SNES** > **S-DSP** pour les cordes.
-5. Le sélecteur de console, le préréglage et les réglages sont enregistrés dans le projet, et leurs paramètres s'automatisent.
+1. Create a software instrument track.
+2. In the Instrument slot, choose **AU Instruments > SleeperMusic > RetroChip**.
+3. Choose the console with the selector, then a preset.
+4. For a second sound, create a new software instrument track with a new RetroChip instance. One track is one sound: for example two **NES** (pulse) tracks, an **NES** (triangle) track for the bass, an **NES** (noise) track for drums, a **Genesis** > **FM** track for an FM bass and a **SNES** > **S-DSP** track for strings.
+5. The console selector, the preset and the settings are saved in the project, and their parameters can be automated.
 
-Si le plugin n'apparaît pas, ouvre **Logic Pro > Réglages > Gestionnaire de modules** et relance son analyse.
+If the plugin does not show up, open **Logic Pro > Settings > Plug-in Manager** and run its scan again.
 
-## Autres logiciels et Windows
+## Other hosts and Windows
 
-Le plugin existe en deux formats : **Audio Unit** (Logic Pro, GarageBand, MainStage, sur macOS seulement) et **VST3** (Ableton Live, Reaper, Bitwig, Cubase, Studio One, FL Studio, sur macOS et sous Windows). Il n'existe pas en AAX (Pro Tools) ni en CLAP.
+The plugin comes in two formats: **Audio Unit** (Logic Pro, GarageBand, MainStage, macOS only) and **VST3** (Ableton Live, Reaper, Bitwig, Cubase, Studio One, FL Studio, on macOS and Windows). There is no AAX (Pro Tools) or CLAP version.
 
-- **macOS** : la compilation installe le VST3 dans `~/Library/Audio/Plug-Ins/VST3`. Dans le logiciel, relance l'analyse des plugins si RetroChip n'apparaît pas.
-- **Windows** : la compilation laisse le VST3 dans `build\RetroChip_artefacts\Release\VST3\RetroChip.vst3`, car le dossier des plugins demande les droits d'administrateur. Copie ce dossier `RetroChip.vst3` entier dans `C:\Program Files\Common Files\VST3`, puis relance l'analyse des plugins dans le logiciel. L'application autonome est dans `build\RetroChip_artefacts\Release\Standalone`.
+- **macOS**: the build installs the VST3 in `~/Library/Audio/Plug-Ins/VST3`. Rescan plugins in the host if RetroChip does not show up.
+- **Windows**: the build leaves the VST3 in `build\RetroChip_artefacts\Release\VST3\RetroChip.vst3`, because the plugin folder needs administrator rights. Copy that whole `RetroChip.vst3` folder into `C:\Program Files\Common Files\VST3`, then rescan plugins in the host. The standalone application is in `build\RetroChip_artefacts\Release\Standalone`.
 
-Les dossiers de sons sont dans le dossier Musique de l'utilisateur sur les deux systèmes : `Musique\RetroChip\SoundFonts`, `Genesis` et `NES`.
+The sound folders are in the user's Music folder on both systems: `Music\RetroChip\SoundFonts`, `Genesis` and `NES`.
 
-Les flèches du clavier ne marchent que si le logiciel hôte laisse le clavier à la fenêtre du plugin. Logic, Live et Reaper le font après un clic dans la fenêtre ; certains logiciels gardent toujours les flèches pour eux.
+The arrow keys only work if the host lets the plugin window have the keyboard. Logic, Live and Reaper do after a click in the window; some hosts always keep the arrows for themselves.
 
-## La NES : DPCM, instruments FamiTracker et puces de cartouches
+## The NES: DPCM, FamiTracker instruments and cartridge chips
 
-**Le canal DPCM (2A03 > DPCM).** C'est le cinquième canal de la NES : il joue des échantillons sur 1 bit, que des jeux ont utilisés pour leur batterie, des voix ou des basses. Le bouton **Importer** du panneau Envelope accepte un WAV : il est converti à la vitesse la plus rapide de la puce (environ 33 kHz), et **limité à environ 1 s** (4081 octets, la limite de la puce).
+**The DPCM channel (2A03 > DPCM).** This is the NES's fifth channel: it plays 1-bit samples, which games used for drums, voices or basses. The **Import** button in the Envelope panel accepts a WAV: it is converted to the chip's fastest rate (about 33 kHz), and **limited to about 1 s** (4081 bytes, the chip's limit).
 
-- **Root Note** indique la touche qui joue le son tel quel. Les autres touches prennent la plus proche des 16 vitesses de la puce, comme dans les jeux : la hauteur avance par sauts, et aucune touche ne joue plus vite que la note de base.
-- Sans **Loop**, le son joue jusqu'à sa fin, même une fois la touche relâchée. Avec **Loop**, il recommence tant que la touche est enfoncée.
-- Le canal n'a pas de volume : l'enveloppe, la vélocité, le vibrato et le glide sont grisés.
+- **Root Note** sets the key that plays the sound as is. Other keys take the nearest of the chip's 16 rates, as in games: pitch moves in steps, and no key plays faster than the root note.
+- Without **Loop**, the sound plays to its end, even after the key is released. With **Loop**, it starts over while the key is held.
+- The channel has no volume: the envelope, velocity, vibrato and glide are greyed out.
 
-**Les instruments FamiTracker (`.fti`).** Dans les jeux NES, un « instrument » est une suite de valeurs que le programme change 60 fois par seconde : volume, arpège, hauteur, rapport cyclique ou forme d'onde. FamiTracker les enregistre dans des fichiers `.fti`, que le bouton **Importer** accepte aussi.
+**FamiTracker instruments (`.fti`).** In NES games, an "instrument" is a sequence of values the program changes 60 times per second: volume, arpeggio, pitch, duty cycle or waveform. FamiTracker saves them in `.fti` files, which the **Import** button also accepts.
 
-- L'instrument va à sa puce (2A03, VRC6 ou N163), qui s'affiche, et la case **Instrument** s'active : il remplace alors les boutons de l'enveloppe. Décoche la case pour revenir à l'enveloppe. Chaque puce garde son propre instrument.
-- Comme dans FamiTracker, la note s'arrête quand la touche est relâchée, sauf si la séquence de volume a un point de relâchement : elle joue alors sa fin.
-- Un instrument 2A03 qui contient des échantillons DPCM devient un **kit** sur le canal DPCM : chaque échantillon joue sur sa touche, à sa vitesse. L'infobulle de l'état indique quelle touche joue quoi.
-- Pris en charge : les fichiers 2.1 à 2.5 des puces 2A03, VRC6 et N163. Les instruments VRC7, FDS et 5B sont refusés avec un message.
-- Les fichiers importés sont copiés dans le projet Logic.
+- The instrument goes to its chip (2A03, VRC6 or N163), which is shown, and the **Instrument** box is ticked: it then replaces the envelope controls. Untick the box to go back to the envelope. Each chip keeps its own instrument.
+- As in FamiTracker, the note stops when the key is released, unless the volume sequence has a release point: it then plays its ending.
+- A 2A03 instrument that holds DPCM samples becomes a **kit** on the DPCM channel: each sample plays on its key, at its rate. The status tooltip shows which key plays what.
+- Supported: versions 2.1 to 2.5 for the 2A03, VRC6 and N163 chips. VRC7, FDS and 5B instruments are refused with a message.
+- Imported files are copied into the Logic project.
 
-**Le dossier d'instruments.** Sous le bouton **Importer**, un menu liste les fichiers `.fti` du dossier `~/Music/RetroChip/NES/`, avec une rubrique par sous-dossier, comme pour les SoundFonts. Choisir un fichier l'importe, comme s'il venait de la fenêtre d'import. Le bouton en forme de dossier ouvre ce dossier dans le Finder (et le crée s'il n'existe pas) ; le bouton en forme de flèche circulaire relit le dossier après un ajout, sans fermer le plugin. Le dossier est aussi relu chaque fois que la NES s'affiche. Les trois puces partagent ce dossier : chaque instrument va à sa puce.
+**The instrument folder.** Under the **Import** button, a menu lists the `.fti` files in `~/Music/RetroChip/NES/`, with one section per subfolder, as for SoundFonts. Choosing a file imports it, as if it came from the import window. The folder-shaped button opens this folder in the Finder (and creates it if it does not exist); the circular-arrow button reads the folder again after you add files, without closing the plugin. The folder is also read again every time the NES is shown. The three chips share this folder: each instrument goes to its chip.
 
-**VRC6 et N163.** Ces puces étaient dans certaines cartouches Famicom japonaises, qui ajoutaient des canaux à la console.
+**VRC6 and N163.** These chips were in some Japanese Famicom cartridges, which added channels to the console.
 
-- **VRC6** (Konami, par exemple *Akumajō Densetsu*) : une pulse à 8 rapports cycliques, ou une dent de scie plus forte, dont le volume change la forme comme sur la puce.
-- **N163** (Namco) : des formes d'onde dessinées sur 32 pas de 4 bits. **Wave** en choisit une des 8 fournies, ou un instrument `.fti` N163 apporte les siennes. **Channels** imite le nombre de canaux que la puce fait tourner : plus il y en a, plus chacun est mis à jour lentement, ce qui donne le grain typique de la puce.
+- **VRC6** (Konami, for example *Akumajō Densetsu*): a pulse with 8 duty cycles, or a louder sawtooth whose volume changes its shape as on the chip.
+- **N163** (Namco): waveforms drawn over 32 steps of 4 bits. **Wave** picks one of the 8 included, or an N163 `.fti` instrument brings its own. **Channels** emulates the number of channels the chip runs: the more there are, the more slowly each one is updated, which gives the chip its typical grit.
 
-## La Genesis : deux puces
+## The Genesis: two chips
 
-La Genesis a deux puces sonores, et ses musiques utilisent les deux. Pour un morceau, mets une instance par son : par exemple **Genesis** > **FM** pour la basse et la mélodie, **Genesis** > **FM** avec **Mon kit PCM** pour la batterie, et **Genesis** > **PSG** pour un arpège ou un charleston.
+The Genesis has two sound chips, and its music uses both. For a song, use one instance per sound: for example **Genesis** > **FM** for the bass and melody, **Genesis** > **FM** with **My PCM kit** for drums, and **Genesis** > **PSG** for an arpeggio or a hi-hat.
 
-Avec **Genesis** > **PSG** (la puce SN76489) :
+With **Genesis** > **PSG** (the SN76489 chip):
 
-- **Tone** joue une onde carrée. La puce ne descend pas sous environ 109 Hz (la touche A1 du clavier du plugin) : plus bas, la hauteur reste à cette limite. Les notes aiguës sont un peu fausses, comme sur la console, car la puce divise son horloge par un nombre entier.
-- **Noise** joue du bruit. **White** donne du bruit blanc, pour les percussions. **Periodic** donne un bourdonnement qui joue les notes et descend plus bas que Tone, ce que les jeux utilisent pour les basses.
-- **Noise Rate** choisit l'une des trois vitesses de la puce (**High**, **Mid**, **Low**) ou **Note**, qui suit la touche jouée. À vitesse fixe, le bruit n'a pas de hauteur et Vibrato et Glide sont grisés.
-- La puce n'a pas d'enveloppe : comme dans un pilote audio de jeu, le volume et la hauteur changent par pas, 60 fois par seconde, avec 16 volumes séparés de 2 dB. L'enveloppe et le vibrato peuvent donc sonner en marches d'escalier, et c'est voulu.
+- **Tone** plays a square wave. The chip does not go below about 109 Hz (the A1 key on the plugin's keyboard): lower, the pitch stays at that limit. High notes are slightly out of tune, as on the console, because the chip divides its clock by a whole number.
+- **Noise** plays noise. **White** gives white noise, for percussion. **Periodic** gives a buzz that plays notes and goes lower than Tone, which games use for basses.
+- **Noise Rate** picks one of the chip's three rates (**High**, **Mid**, **Low**) or **Note**, which follows the key played. At a fixed rate, the noise has no pitch and Vibrato and Glide are greyed out.
+- The chip has no envelope: as in a game's sound driver, volume and pitch change in steps, 60 times per second, with 16 volume levels 2 dB apart. The envelope and vibrato can therefore sound like stairs, and that is intended.
 
-## Importer un WAV (SNES, S-DSP)
+## Importing a WAV (SNES, S-DSP)
 
-Avec **SNES** > **S-DSP**, le bouton **Importer** charge un fichier WAV choisi par toi, qui devient l'instrument « Mon échantillon ».
+With **SNES** > **S-DSP**, the **Import** button loads a WAV file of your choice, which becomes the "My sample" instrument.
 
-- Un seul échantillon par instance. Un nouvel import remplace le précédent.
-- Un fichier stéréo est mixé en mono. Le fichier est converti à 32 kHz, puis compressé en BRR, hors du fil audio.
-- **Limite de durée : environ 3,6 s** (64 Ko de BRR, soit 116 496 échantillons à 32 kHz). Un fichier plus long est coupé et l'interface l'indique.
-- Un fichier illisible, vide ou non pris en charge laisse l'échantillon actuel en place, avec un message.
-- La note de base indique à quelle note le fichier sonne tel quel. L'option de boucle reprend au début de l'échantillon.
-- La longueur est ajustée au multiple de 16 échantillons le plus proche pour que les boucles se referment sans trou. La hauteur bouge d'autant, ce qui est imperceptible sauf sur un fichier très court.
-- L'échantillon est enregistré dans l'état du plugin, donc dans le projet Logic : le fichier WAV d'origine n'est plus nécessaire à la réouverture.
+- One sample per instance. A new import replaces the previous one.
+- A stereo file is mixed to mono. The file is converted to 32 kHz, then compressed to BRR, off the audio thread.
+- **Length limit: about 3.6 s** (64 KB of BRR, or 116,496 samples at 32 kHz). A longer file is cut and the interface says so.
+- An unreadable, empty or unsupported file leaves the current sample in place, with a message.
+- The root note sets which note the file plays as is. The loop option starts over from the beginning of the sample.
+- The length is adjusted to the nearest multiple of 16 samples so that loops close without a gap. The pitch shifts by as much, which is inaudible except on a very short file.
+- The sample is saved in the plugin's state, and so in the Logic project: the original WAV file is no longer needed when reopening.
 
-## Importer un TFI ou un WAV (Genesis, FM)
+## Importing a TFI or a WAV (Genesis, FM)
 
-Avec **Genesis** > **FM**, le bouton **Importer** accepte un fichier `.tfi`, un WAV ou plusieurs WAV. Chaque import remplace le précédent de sa sorte et laisse l'autre en place. Les deux sont enregistrés dans le projet Logic : les fichiers d'origine ne sont plus nécessaires à la réouverture. Un fichier inutilisable laisse le son actuel en place, avec un message.
+With **Genesis** > **FM**, the **Import** button accepts a `.tfi` file, one WAV or several WAVs. Each import replaces the previous one of its kind and leaves the other in place. Both are saved in the Logic project: the original files are no longer needed when reopening. An unusable file leaves the current sound in place, with a message.
 
-**Le dossier de timbres.** Sous le bouton **Importer**, un menu liste les fichiers `.tfi` du dossier `~/Music/RetroChip/Genesis/`, avec une rubrique par sous-dossier. Choisir un fichier l'importe et le sélectionne comme timbre. Le bouton en forme de dossier ouvre ce dossier dans le Finder (et le crée s'il n'existe pas) ; le bouton en forme de flèche circulaire relit le dossier après un ajout, sans fermer le plugin. Le dossier est aussi relu chaque fois que **Genesis** > **FM** s'affiche.
+**The timbre folder.** Under the **Import** button, a menu lists the `.tfi` files in `~/Music/RetroChip/Genesis/`, with one section per subfolder. Choosing a file imports it and selects it as the timbre. The folder-shaped button opens this folder in the Finder (and creates it if it does not exist); the circular-arrow button reads the folder again after you add files, without closing the plugin. The folder is also read again every time **Genesis** > **FM** is shown.
 
-**Timbre `.tfi` (« Mon timbre TFI »).** Un fichier TFI (TFM Music Maker) décrit un timbre FM de 42 octets et ne contient aucun son enregistré. Le plugin charge ses opérateurs, son SSG-EG, son algorithme et sa rétroaction. Ensuite, le timbre se joue comme les autres, avec les mêmes réglages.
+**`.tfi` timbre ("My TFI timbre").** A TFI file (TFM Music Maker) describes a 42-byte FM timbre and holds no recorded sound. The plugin loads its operators, its SSG-EG, its algorithm and its feedback. The timbre then plays like the others, with the same controls.
 
-**Échantillon WAV (« Mon échantillon PCM »).** Le fichier passe par le DAC de la puce, le canal PCM 8 bits de la Genesis.
+**WAV sample ("My PCM sample").** The file goes through the chip's DAC, the Genesis's 8-bit PCM channel.
 
-- Un fichier stéréo est mixé en mono, puis converti à environ 13,3 kHz et en 8 bits, hors du fil audio.
-- **Limite de durée : environ 19,7 s** (256 Ko). Un fichier plus long est coupé et l'interface l'indique.
-- **Root Note** indique à quelle note le fichier sonne tel quel.
-- **Loop** décide de ce que fait la touche. Sans boucle, l'échantillon joue jusqu'à sa fin, même une fois la touche relâchée, ce qui convient aux percussions. Avec la boucle, il reprend au début tant que la touche est enfoncée, puis s'éteint en 20 ms à 2 s selon le bouton **Release**.
-- Les 8 voix sont additionnées puis écrêtées à 8 bits pour l'unique DAC, comme le ferait un pilote audio de console : un accord de notes fortes distorsionne.
-- Feedback, Bright, Attack et Decay n'agissent pas sur un échantillon et sont grisés. Vibrato, Glide, Velocity et Gain restent actifs.
+- A stereo file is mixed to mono, then converted to about 13.3 kHz and 8 bits, off the audio thread.
+- **Length limit: about 19.7 s** (256 KB). A longer file is cut and the interface says so.
+- **Root Note** sets which note the file plays as is.
+- **Loop** decides what the key does. Without a loop, the sample plays to its end, even after the key is released, which suits percussion. With the loop, it starts over while the key is held, then fades out in 20 ms to 2 s depending on the **Release** knob.
+- The 8 voices are summed then clipped to 8 bits for the single DAC, as a console sound driver would: a chord of loud notes distorts.
+- Feedback, Bright, Attack and Decay do not act on a sample and are greyed out. Vibrato, Glide, Velocity and Gain stay active.
 
-**Plusieurs WAV (« Mon kit PCM »).** Pour une batterie, comme dans les jeux Genesis, sélectionne plusieurs fichiers d'un coup dans la fenêtre d'import : chacun va sur sa touche et une seule instance joue tout le kit.
+**Several WAVs ("My PCM kit").** For drums, as in Genesis games, select several files at once in the import window: each goes on its own key and a single instance plays the whole kit.
 
-- Les fichiers sont placés par ordre de nom, en partant de la touche la plus grave du clavier affiché (C1), une touche par fichier. `1 kick.wav`, `2 snare.wav` et `3 hat.wav` vont donc sur C1, C#1 et D1. L'infobulle de l'état indique quelle touche joue quoi.
-- Chaque son joue à sa hauteur d'origine et jusqu'à sa fin, même une fois la touche relâchée. Les touches sans son ne font rien.
-- Seuls **Velocity** et **Gain** agissent sur un kit. Les autres réglages sont grisés.
-- **Limites :** 61 sons, et 256 Ko au total (environ 19,7 s). Ce qui dépasse est laissé de côté ou coupé, avec un message. Un fichier illisible est ignoré sans laisser de trou.
-- Un nouvel import remplace tout le kit. Si le kit est déjà le timbre choisi, un seul WAV donne un kit d'un son.
+- Files are placed in name order, starting from the lowest key of the keyboard shown (C1), one key per file. `1 kick.wav`, `2 snare.wav` and `3 hat.wav` therefore go on C1, C#1 and D1. The status tooltip shows which key plays what.
+- Each sound plays at its original pitch and to its end, even after the key is released. Keys without a sound do nothing.
+- Only **Velocity** and **Gain** act on a kit. The other controls are greyed out.
+- **Limits:** 61 sounds, and 256 KB in all (about 19.7 s). Anything beyond is left out or cut, with a message. An unreadable file is skipped without leaving a gap.
+- A new import replaces the whole kit. If the kit is already the chosen timbre, a single WAV gives a one-sound kit.
 
 ## SoundFonts
 
-Le choix **SoundFont** de l'onglet SNES joue un fichier `.sf2` (SoundFont 2) que tu as toi-même téléchargé. RetroChip ne fournit aucun fichier SoundFont et n'en télécharge aucun : le choix de ce que tu télécharges et utilises t'appartient. Des SoundFonts tirés de jeux sont par exemple proposés par William Kage : <https://www.williamkage.com/snes_soundfonts/>.
+The **SoundFont** choice in the SNES tab plays an `.sf2` (SoundFont 2) file you downloaded yourself. RetroChip ships no SoundFont file and downloads none: what you download and use is your choice. SoundFonts taken from games are offered, for example, by William Kage: <https://www.williamkage.com/snes_soundfonts/>.
 
-**Dossier.** Place tes fichiers dans `~/Music/RetroChip/SoundFonts/`. Le bouton **Ouvrir le dossier** de l'interface le crée s'il n'existe pas. Chaque sous-dossier direct est une rubrique du menu, dont le nom s'affiche tel que tu l'as écrit. Les fichiers placés à la racine vont sous **Autres**. Par exemple :
+**Folder.** Put your files in `~/Music/RetroChip/SoundFonts/`. The interface's **Open folder** button creates it if it does not exist. Each direct subfolder is a section of the menu, whose name is shown as you wrote it. Files at the top level go under **Other**. For example:
 
 ```text
 ~/Music/RetroChip/SoundFonts/
 ├── SNES/
-│   └── Mon jeu.sf2
-├── Mes sons/
-│   └── Cordes.sf2
-└── Mon son.sf2          (apparaît sous « Autres »)
+│   └── My game.sf2
+├── My sounds/
+│   └── Strings.sf2
+└── My sound.sf2          (shows under "Other")
 ```
 
-**Dézipper d'abord.** Les SoundFonts de ce site se téléchargent en `.zip`. RetroChip ne lit pas les ZIP : décompresse l'archive (double-clic dans le Finder), puis place le fichier `.sf2` obtenu dans un sous-dossier, comme `SNES/Mon jeu.sf2` ci-dessus.
+**Unzip first.** That site's SoundFonts download as `.zip` files. RetroChip does not read ZIPs: unpack the archive (double-click it in the Finder), then put the resulting `.sf2` file in a subfolder, like `SNES/My game.sf2` above.
 
-**Dans Logic Pro.**
+**In Logic Pro.**
 
-1. Crée une piste d'instrument logiciel avec **AU Instruments > SleeperMusic > RetroChip**.
-2. Choisis l'onglet **SNES**, puis **SoundFont** à côté.
-3. Si tu viens d'ajouter un fichier, clique sur **Actualiser** (la liste est aussi relue à l'ouverture de l'interface).
-4. Choisis le fichier dans le premier menu, puis l'instrument dans le second.
-5. Joue : chaque note utilise les zones, les boucles et les enveloppes de l'instrument choisi. L'écho, le gain et la vélocité se règlent dans l'interface.
+1. Create a software instrument track with **AU Instruments > SleeperMusic > RetroChip**.
+2. Choose the **SNES** tab, then **SoundFont** beside it.
+3. If you just added a file, click **Refresh** (the list is also read again when the interface opens).
+4. Choose the file in the first menu, then the instrument in the second.
+5. Play: each note uses the zones, loops and envelopes of the chosen instrument. Echo, gain and velocity are set in the interface.
 
-**Limites.**
+**Limits.**
 
-- **32 voix** au maximum par instance. Au-delà, une nouvelle note est ignorée. Une paire stéréo (une zone à gauche, une à droite) prend 2 voix : compte environ 16 notes pour un instrument stéréo.
-- **Sortie mono**, comme les autres consoles. Les paires stéréo sont mixées en mono et le panoramique est ignoré ; pour qu'une paire ne sonne pas deux fois plus fort qu'une zone mono, chaque zone décalée vers un côté est atténuée (6 dB à fond d'un côté).
-- **Ignoré dans les fichiers SF2 :** les modulateurs (donc la vélocité vers le filtre et le vibrato de la molette de modulation) et les envois de réverbération et de chorus.
-- **Non pris en charge :** les fichiers ZIP, SFZ et SF3. Seuls les fichiers `.sf2` sont lus.
-- Un fichier de plus de 1 Go est refusé.
+- **32 voices** at most per instance. Beyond that, a new note is ignored. A stereo pair (one zone left, one right) takes 2 voices: count about 16 notes for a stereo instrument.
+- **Mono output**, like the other consoles. Stereo pairs are mixed to mono and panning is ignored; so that a pair does not sound twice as loud as a mono zone, each zone panned to one side is attenuated (6 dB when fully to one side).
+- **Ignored in SF2 files:** modulators (so velocity to filter and mod-wheel vibrato) and reverb and chorus sends.
+- **Not supported:** ZIP, SFZ and SF3 files. Only `.sf2` files are read.
+- A file over 1 GB is refused.
 
-**Le projet garde une référence, pas une copie.** Le projet Logic enregistre le chemin du fichier (relatif au dossier SoundFonts) et le numéro de l'instrument, mais pas les échantillons. Tant que le fichier reste à sa place dans le dossier, le projet rouvre le même son. Si tu le déplaces, le renommes ou le supprimes, l'instrument reste muet et un message donne le nom du fichier manquant. Garde donc les fichiers à leur place, ou remets-les-y avant d'ouvrir un ancien projet. Si tu remets le fichier pendant que le projet est ouvert, clique sur **Actualiser** : il est relu et l'instrument enregistré revient.
+**The project keeps a reference, not a copy.** The Logic project saves the file's path (relative to the SoundFonts folder) and the instrument number, but not the samples. As long as the file stays in place in the folder, the project reopens the same sound. If you move, rename or delete it, the instrument stays silent and a message gives the name of the missing file. So keep the files in place, or put them back before opening an old project. If you put the file back while the project is open, click **Refresh**: it is read again and the saved instrument comes back.
 
-**Avant de vendre.** Le site de William Kage conseille de consulter un avocat avant de vendre quoi que ce soit qui utilise ces échantillons. RetroChip ne distribue aucun SoundFont ; les droits sur les fichiers que tu utilises sont ton affaire.
+**Before selling anything.** William Kage's site advises consulting a lawyer before selling anything that uses these samples. RetroChip distributes no SoundFont; the rights to the files you use are your own concern.
 
-## Compiler
+## Building
 
-Il faut les Command Line Tools d'Apple et CMake. JUCE, ymfm et TinySoundFont doivent être clonés dans `external/`.
+You need Apple's Command Line Tools and CMake. JUCE, ymfm and TinySoundFont must be cloned into `external/`.
 
 ```bash
 brew install cmake
 ```
 
-JUCE 9.0.5 :
+JUCE 9.0.5:
 
 ```bash
 git clone --depth 1 --branch 9.0.5 https://github.com/juce-framework/JUCE.git external/JUCE
 ```
 
-ymfm, épinglé au commit `81aec25ccbb98f4873a255f7551ac4dadac59b4a` (moteur du YM2612) :
+ymfm, pinned to commit `81aec25ccbb98f4873a255f7551ac4dadac59b4a` (the YM2612 engine):
 
 ```bash
 git clone https://github.com/aaronsgiles/ymfm.git external/ymfm
 git -C external/ymfm checkout 81aec25ccbb98f4873a255f7551ac4dadac59b4a
 ```
 
-TinySoundFont, épinglé au commit `853a0a171759f1ddba0de1442133a75912bbeffa` (lecture des SoundFonts) :
+TinySoundFont, pinned to commit `853a0a171759f1ddba0de1442133a75912bbeffa` (SoundFont playback):
 
 ```bash
 git clone https://github.com/schellingb/TinySoundFont.git external/TinySoundFont
@@ -206,7 +206,7 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j8
 ```
 
-**Sous Windows**, il faut Visual Studio 2022 (avec « Développement Desktop en C++ »), CMake et Git. Les commandes de clonage sont les mêmes ; ensuite, dans une invite de commandes :
+**On Windows**, you need Visual Studio 2022 (with "Desktop development with C++"), CMake and Git. The clone commands are the same; then, in a command prompt:
 
 ```bash
 cmake -S . -B build
@@ -216,9 +216,9 @@ cmake -S . -B build
 cmake --build build --config Release
 ```
 
-Cette compilation produit l'Audio Unit, le VST3 et l'application autonome, et copie l'AU et le VST3 dans `~/Library/Audio/Plug-Ins`. L'application autonome est dans `build/RetroChip_artefacts/Release/Standalone/RetroChip.app`.
+This build produces the Audio Unit, the VST3 and the standalone application, and copies the AU and VST3 into `~/Library/Audio/Plug-Ins`. The standalone application is in `build/RetroChip_artefacts/Release/Standalone/RetroChip.app`.
 
-## Tester
+## Testing
 
 ```bash
 ctest --test-dir build -C Release --output-on-failure
@@ -228,47 +228,47 @@ ctest --test-dir build -C Release --output-on-failure
 auval -v aumu Rc2a Slpr
 ```
 
-Il y a trois suites : celle du moteur, celle du plugin, et `host_tests`, qui charge le VST3 et l'AU compilés comme le fait un logiciel hôte. Elle vérifie le chargement, le son à 44,1, 48 et 96 kHz avec des blocs de tailles diverses, les préréglages, l'enregistrement et la réouverture d'un projet, l'interface et deux instances à la fois.
+There are three suites: the engine's, the plugin's, and `host_tests`, which loads the built VST3 and AU as a host does. It checks loading, sound at 44.1, 48 and 96 kHz with various block sizes, the presets, saving and reopening a project, the interface, and two instances at once.
 
-Le fichier `.github/workflows/build.yml` compile et teste le plugin sur macOS et sous Windows à chaque envoi sur GitHub, une fois le dépôt créé. Le VST3 Windows de chaque compilation se télécharge depuis la page de la compilation, pendant 14 jours.
+The `.github/workflows/build.yml` file builds and tests the plugin on macOS and Windows at every push to GitHub. Each build's Windows VST3 can be downloaded from the build's page for 14 days.
 
-Les tests du plugin écrivent des captures de l'interface dans `build/editor_*.png`.
+The plugin tests write screenshots of the interface to `build/editor_*.png`.
 
-Si `auval` ne voit pas la dernière version après une compilation, exécute d'abord `killall -9 AudioComponentRegistrar`.
+If `auval` does not see the latest version after a build, run `killall -9 AudioComponentRegistrar` first.
 
 ## Structure
 
-- `engine/` : moteurs sonores en C++ pur, sans JUCE.
-  - `engine/` (racine) : moteur NES (2A03 avec DPCM, VRC6, N163), interface commune `ConsoleEngine` et rééchantillonneur.
-  - `engine/nes/` : lecteur de fichiers FTI, séquences d'instrument, encodeur DPCM et formes d'onde du N163.
-  - `engine/genesis/` : moteur YM2612 (deux puces ymfm, 12 timbres, lecture du PCM et des kits par le DAC), lecteur de fichiers TFI et moteur SN76489.
-  - `engine/snes/` : moteur S-DSP (voix, enveloppe, écho, BRR, banque de 12 instruments).
-  - `engine/soundfont/` : lecture des fichiers SoundFont avec TinySoundFont.
-- `plugin/` : processeur, paramètres, préréglages, import WAV, TFI et FTI, dossiers de SoundFonts, de timbres et d'instruments, traduction française (`Localisation.cpp`) et interface JUCE.
-- `tests/` : tests du moteur, du plugin et du chargement par un hôte (`host_tests.cpp`), avec les références de la 2A03 dans `tests/reference/`.
-- `.github/workflows/` : compilation et tests sur macOS et Windows.
-- `external/` : JUCE, ymfm et TinySoundFont, clonés à la main et ignorés par le dépôt.
-- `LICENSE` : texte de la licence AGPLv3.
-- `THIRD_PARTY_LICENSES.md` : licences de JUCE, de ymfm, de TinySoundFont et des composants inclus dans JUCE.
+- `engine/`: sound engines in plain C++, without JUCE.
+  - `engine/` (top level): NES engine (2A03 with DPCM, VRC6, N163), the shared `ConsoleEngine` interface and the resampler.
+  - `engine/nes/`: FTI file reader, instrument sequences, DPCM encoder and N163 waveforms.
+  - `engine/genesis/`: YM2612 engine (two ymfm chips, 12 timbres, PCM and kit playback through the DAC), TFI file reader and SN76489 engine.
+  - `engine/snes/`: S-DSP engine (voices, envelope, echo, BRR, bank of 12 instruments).
+  - `engine/soundfont/`: SoundFont file playback with TinySoundFont.
+- `plugin/`: processor, parameters, presets, WAV, TFI and FTI import, SoundFont, timbre and instrument folders, French translation (`Localisation.cpp`) and the JUCE interface.
+- `tests/`: engine, plugin and host-loading tests (`host_tests.cpp`), with the 2A03 references in `tests/reference/`.
+- `.github/workflows/`: build and tests on macOS and Windows.
+- `external/`: JUCE, ymfm and TinySoundFont, cloned by hand and ignored by the repository.
+- `LICENSE`: the AGPLv3 licence text.
+- `THIRD_PARTY_LICENSES.md`: licences of JUCE, ymfm, TinySoundFont and the components bundled with JUCE.
 
 ## Licence
 
-RetroChip est un logiciel libre, © 2026 SleeperMusic, distribué sous la licence [GNU AGPLv3](LICENSE), **sans aucune garantie**. Toute personne qui distribue le plugin, modifié ou non, doit aussi fournir son code source sous cette licence.
+RetroChip is free software, © 2026 SleeperMusic, distributed under the [GNU AGPLv3](LICENSE) licence, **without any warranty**. Anyone who distributes the plugin, modified or not, must also provide its source code under this licence.
 
-Toute distribution doit inclure [`LICENSE`](LICENSE) et [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).
+Any distribution must include [`LICENSE`](LICENSE) and [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).
 
-- **JUCE :** utilisé sous AGPLv3. Il existe aussi sous licence commerciale, que ce projet n'utilise pas.
-- **ymfm :** émulation des puces Yamaha FM par Aaron Giles, sous licence BSD 3 clauses.
-- **TinySoundFont :** lecteur de SoundFonts par Bernhard Schelling, sous licence MIT.
-- **SoundFonts :** aucun n'est fourni avec le plugin. Leurs droits restent ceux de leurs auteurs.
-- **Tables des puces :** valeurs documentées du matériel, sans code d'émulateur tiers.
+- **JUCE:** used under AGPLv3. It is also available under a commercial licence, which this project does not use.
+- **ymfm:** Yamaha FM chip emulation by Aaron Giles, under the BSD 3-clause licence.
+- **TinySoundFont:** SoundFont player by Bernhard Schelling, under the MIT licence.
+- **SoundFonts:** none ship with the plugin. Their rights remain with their authors.
+- **Chip tables:** documented hardware values, without third-party emulator code.
 
-## Marques
+## Trademarks
 
-RetroChip n'est ni affilié à Nintendo, Sega, Yamaha, Sony, Steinberg ou Apple, ni approuvé par ces sociétés. Leurs marques ne servent ici qu'à décrire le matériel et les formats concernés. VST est une marque de Steinberg Media Technologies GmbH.
+RetroChip is not affiliated with or endorsed by Nintendo, Sega, Yamaha, Sony, Steinberg or Apple. Their trademarks are used here only to describe the hardware and formats concerned. VST is a trademark of Steinberg Media Technologies GmbH.
 
-## Diffusion
+## Distribution
 
-Les compilations de ce dépôt n'ont qu'une signature locale (ad hoc) et ne fonctionnent que sur Apple Silicon. Une version prête à installer demande un compte Apple Developer, une signature, une notarisation et un binaire universel pour les Mac Intel.
+Builds from this repository only have a local (ad hoc) signature and only run on Apple Silicon. A ready-to-install release needs an Apple Developer account, signing, notarisation and a universal binary for Intel Macs.
 
-Les codes `Slpr` et `Rc2a` identifient le plugin dans les projets : ils doivent rester stables une fois le plugin diffusé.
+The `Slpr` and `Rc2a` codes identify the plugin in projects: they must stay stable once the plugin is released.

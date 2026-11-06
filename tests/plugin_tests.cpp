@@ -5937,7 +5937,7 @@ void editor_genesis_import_selects_what_was_imported()
 void ym2612_panel_follows_the_timbre()
 {
     TempFolder folder;
-    const auto wav = folder.dir.getChildFile("Un nom assez long pour le panneau.wav");
+    const auto wav = folder.dir.getChildFile("A fairly long name for the panel.wav");
     writeMono(wav, sineWave(440.0, 32000.0, 0.2));
 
     RetroChipProcessor processor;
